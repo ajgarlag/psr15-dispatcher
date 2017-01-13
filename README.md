@@ -24,51 +24,73 @@ $ composer require ajgarlag/psr15-dispatcher
 Usage
 -----
 
-Given that you have a nuclear application and you would like to dispatch it wrapped by several [PSR-15] middlewares,
-your app must implements [DelegateInterface] or must be decorated with a `DelegateInterface` implementation.
+You should have a nuclear application that you would like to dispatch decorated with several [PSR-15] middlewares.
+
+At first, your app must implements [DelegateInterface] or must be wrapped in a `DelegateInterface` implementation.
 
 ```php
 /* @var $delegate DelegateInterface */
 $delegate = new YourApp();
 ```
 
-### Piped dispatch
+Now, you can choose between a `Pipe` or a `Stack` to dispatch your app.
 
-One way to dispatch your app is to create a `Pipe`, connect the desired middlewares and finally process the server
-request through the pipe:
+### Pipe dispatch
+
+With this option, you create a `Pipe`, connect the desired middlewares and finally process the server
+request through the pipe, passing your app as delegate:
+
 ```php
 use Ajgarlag\Psr15\Dispatcher\Pipe;
 
 $pipe = Pipe::create()
-    ->withConnectedMiddleware(new LogAccessMiddleware())
-    ->withConnectedMiddleware(new ThrotleClientMiddleware())
-    ->withConnectedMiddleware(new AuthenticateClientMiddleware())
+    ->withConnectedMiddleware(new FirstMiddleware())
+    ->withConnectedMiddleware(new MiddleMiddleware())
+    ->withConnectedMiddleware(new LastMiddleware())
 ;
 
 $response = $pipe->process($request, $delegate);
 ```
 
-The `Pipe` class implements itself the PSR-15 [MiddlewareInterface], so it can be nested inside another `Pipe`.
+The `Pipe` class implements itself the PSR-15 [MiddlewareInterface], so it can be connected to another `Pipe`.
 
 
-### Stacked dispatch
+### Stack dispatch
 
-If you prefer, you can wrap your app delegate into an `Stack` instance, push the desired middlewares and finally process
-the server request through the stack. Beware that to achieve the same behavior you must push middlewares in **reverse**
-order:
+With this option, you wrap your app delegate into an `Stack` instance, push the desired middlewares and finally process
+the server request through the stack. Beware that to achieve the same behavior that in the previous `Pipe` you must push
+middlewares in **reverse** order:
+
 ```php
 use Ajgarlag\Psr15\Dispatcher\Stack;
 
 $stack = Stack::create($delegate)
-    ->withPushedMiddleware(new AuthenticateClientMiddleware())
-    ->withPushedMiddleware(new ThrotleClientMiddleware())
-    ->withPushedMiddleware(new LogAccessMiddleware())
+    ->withPushedMiddleware(new LastMiddleware())
+    ->withPushedMiddleware(new MiddleMiddleware())
+    ->withPushedMiddleware(new FirstMiddleware())
 ;
 
 $response = $stack->process($request);
 ```
 
 The `Stack` class implements itself the PSR-15 [DelegateInterface], so it can be wrapped by another `Stack`.
+
+
+#### Pipe pushed onto the stack
+
+My preferred option is to build a `Pipe` with middlewares connected in natural order, and then, push it onto the stack,
+but this is a matter of taste:
+
+```php
+$stack = Stack::create($delegate);
+$pipe = Pipe::create()
+    ->withConnectedMiddleware(new FirstMiddleware())
+    ->withConnectedMiddleware(new MiddleMiddleware())
+    ->withConnectedMiddleware(new LastMiddleware())
+;
+
+$application = $stack->withPushedMiddleware($pipe);
+```
 
 
 License
