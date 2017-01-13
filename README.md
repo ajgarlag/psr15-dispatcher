@@ -40,9 +40,9 @@ request through the pipe:
 use Ajgarlag\Psr15\Dispatcher\Pipe;
 
 $pipe = Pipe::create()
-    ->withMiddleware(new LogAccessMiddleware())
-    ->withMiddleware(new ThrotleClientMiddleware())
-    ->withMiddleware(new AuthenticateClientMiddleware())
+    ->withConnectedMiddleware(new LogAccessMiddleware())
+    ->withConnectedMiddleware(new ThrotleClientMiddleware())
+    ->withConnectedMiddleware(new AuthenticateClientMiddleware())
 ;
 
 $response = $pipe->process($request, $delegate);
@@ -60,9 +60,9 @@ order:
 use Ajgarlag\Psr15\Dispatcher\Stack;
 
 $stack = Stack::create($delegate)
-    ->withMiddleware(new AuthenticateClientMiddleware())
-    ->withMiddleware(new ThrotleClientMiddleware())
-    ->withMiddleware(new LogAccessMiddleware())
+    ->withPushedMiddleware(new AuthenticateClientMiddleware())
+    ->withPushedMiddleware(new ThrotleClientMiddleware())
+    ->withPushedMiddleware(new LogAccessMiddleware())
 ;
 
 $response = $stack->process($request);

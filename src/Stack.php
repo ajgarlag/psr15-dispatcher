@@ -69,7 +69,7 @@ class Stack implements DelegateInterface
      *
      * @return self
      */
-    public function withMiddleware(MiddlewareInterface $middleware)
+    public function withPushedMiddleware(MiddlewareInterface $middleware)
     {
         $stack = clone $this;
         array_unshift($stack->middlewares, $middleware);

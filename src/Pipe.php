@@ -49,7 +49,7 @@ class Pipe implements MiddlewareInterface
 
         $stack = Stack::create($delegate);
         foreach (array_reverse($this->middlewares) as $middleware) {
-            $stack = $stack->withMiddleware($middleware);
+            $stack = $stack->withPushedMiddleware($middleware);
         }
 
         return $stack->process($request);
@@ -62,7 +62,7 @@ class Pipe implements MiddlewareInterface
      *
      * @return self
      */
-    public function withMiddleware(MiddlewareInterface $middleware)
+    public function withConnectedMiddleware(MiddlewareInterface $middleware)
     {
         $pipe = clone $this;
         array_push($pipe->middlewares, $middleware);

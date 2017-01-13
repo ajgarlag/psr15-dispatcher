@@ -49,7 +49,7 @@ class StackSpec extends ObjectBehavior
 
     public function it_creates_a_new_stack_when_a_middleware_is_pushed(MiddlewareInterface $middleware)
     {
-        $stack = $this->withMiddleware($middleware);
+        $stack = $this->withPushedMiddleware($middleware);
 
         $stack->shouldBeAnInstanceOf(Stack::class);
         $stack->shouldNotBe($this);
@@ -77,7 +77,7 @@ class StackSpec extends ObjectBehavior
             ->shouldBeCalledTimes(2)
         ;
 
-        $stack = $this->withMiddleware($innerMiddleware)->withMiddleware($outerMiddleware);
+        $stack = $this->withPushedMiddleware($innerMiddleware)->withPushedMiddleware($outerMiddleware);
 
         $stack->process($this->fakeAServerRequest())->shouldReturn($response);
         $stack->process($this->fakeAServerRequest())->shouldReturn($response);

@@ -48,7 +48,7 @@ class PipeSpec extends ObjectBehavior
 
     public function it_creates_a_new_pipeline_when_a_middleware_is_connected(MiddlewareInterface $middleware)
     {
-        $pipe = $this->withMiddleware($middleware);
+        $pipe = $this->withConnectedMiddleware($middleware);
 
         $pipe->shouldBeAnInstanceOf(Pipe::class);
         $pipe->shouldNotBe($this);
@@ -76,7 +76,7 @@ class PipeSpec extends ObjectBehavior
             ->shouldBeCalledTimes(2)
         ;
 
-        $pipe = $this->withMiddleware($firstMiddleware)->withMiddleware($lastMiddleware);
+        $pipe = $this->withConnectedMiddleware($firstMiddleware)->withConnectedMiddleware($lastMiddleware);
 
         $pipe->process($this->fakeAServerRequest(), $delegate)->shouldReturn($response);
         $pipe->process($this->fakeAServerRequest(), $delegate)->shouldReturn($response);
