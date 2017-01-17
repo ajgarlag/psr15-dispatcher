@@ -54,6 +54,34 @@ class PipeSpec extends ObjectBehavior
         $pipe->shouldNotBe($this);
     }
 
+    public function it_can_create_a_new_pipeline_with_middlewares_connected(MiddlewareInterface $firstMiddleware, MiddlewareInterface $lastMiddleware, DelegateInterface $delegate)
+    {
+        $response = $this->fakeAResponse();
+
+        $delegate->process(Argument::type(ServerRequestInterface::class))->willReturn($response)->shouldBeCalledTimes(2);
+
+        $firstMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(DelegateInterface::class))->will(
+                function ($args) use ($lastMiddleware) {
+                    $lastMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(DelegateInterface::class))->will(
+                            function ($args) {
+                                return $args[1]->process($args[0]);
+                            }
+                        )
+                        ->shouldBeCalledTimes(2)
+                    ;
+
+                    return $args[1]->process($args[0]);
+                }
+            )
+            ->shouldBeCalledTimes(2)
+        ;
+
+        $this->beConstructedThrough('create', [[$firstMiddleware, $lastMiddleware]]);
+
+        $this->process($this->fakeAServerRequest(), $delegate)->shouldReturn($response);
+        $this->process($this->fakeAServerRequest(), $delegate)->shouldReturn($response);
+    }
+
     public function it_processes_requests_through_piped_middlewares_in_order(MiddlewareInterface $firstMiddleware, MiddlewareInterface $lastMiddleware, DelegateInterface $delegate)
     {
         $response = $this->fakeAResponse();

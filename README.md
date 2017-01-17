@@ -55,6 +55,18 @@ $response = $pipe->process($request, $delegate);
 The `Pipe` class implements itself the PSR-15 [MiddlewareInterface], so it can be connected to another `Pipe`.
 
 
+#### Pipe initialization
+
+You can pass a FIFO array of middlewares to initialize the `Pipe`:
+
+```php
+$pipe = Pipe::create([
+    new FirstMiddleware(),
+    new MiddleMiddleware(),
+    new LastMiddleware(),
+]);
+```
+
 ### Stack dispatch
 
 With this option, you wrap your app delegate into an `Stack` instance, push the desired middlewares and finally process
@@ -75,6 +87,17 @@ $response = $stack->process($request);
 
 The `Stack` class implements itself the PSR-15 [DelegateInterface], so it can be wrapped by another `Stack`.
 
+#### Stack initialization
+
+You can pass a LIFO array of middlewares to initialize the `Stack`:
+
+```php
+$stack = Stack::create($delegate, [
+    new LastMiddleware(),
+    new MiddleMiddleware(),
+    new FirstMiddleware(),
+]);
+```
 
 #### Pipe pushed onto the stack
 

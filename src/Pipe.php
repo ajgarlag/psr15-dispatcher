@@ -28,11 +28,18 @@ class Pipe implements MiddlewareInterface
     }
 
     /**
+     * @param MiddlewareInterface[] $middlewares FIFO array of middlewares
+     *
      * @return self
      */
-    public static function create()
+    public static function create(array $middlewares = [])
     {
-        return new self();
+        $pipe = new self();
+        foreach ($middlewares as $middleware) {
+            $pipe = $pipe->withConnectedMiddleware($middleware);
+        }
+
+        return $pipe;
     }
 
     /**
@@ -47,10 +54,7 @@ class Pipe implements MiddlewareInterface
             return $delegate->process($request);
         }
 
-        $stack = Stack::create($delegate);
-        foreach (array_reverse($this->middlewares) as $middleware) {
-            $stack = $stack->withPushedMiddleware($middleware);
-        }
+        $stack = Stack::create($delegate, array_reverse($this->middlewares));
 
         return $stack->process($request);
     }

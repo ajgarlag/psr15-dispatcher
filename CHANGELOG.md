@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- `Pipe` and `Stack` can be initialized with an array of middlewares.
+
 ## 0.1.0 - 2017-01-13
 
 ### Added

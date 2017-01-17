@@ -55,6 +55,34 @@ class StackSpec extends ObjectBehavior
         $stack->shouldNotBe($this);
     }
 
+    public function it_can_create_a_new_stack_with_middlewares_pushed(MiddlewareInterface $innerMiddleware, MiddlewareInterface $outerMiddleware, DelegateInterface $delegate)
+    {
+        $response = $this->fakeAResponse();
+
+        $delegate->process(Argument::type(RequestInterface::class))->willReturn($response)->shouldBeCalledTimes(2);
+
+        $outerMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(DelegateInterface::class))->will(
+                function ($args) use ($innerMiddleware) {
+                    $innerMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(DelegateInterface::class))->will(
+                            function ($args) {
+                                return $args[1]->process($args[0]);
+                            }
+                        )
+                        ->shouldBeCalledTimes(2)
+                    ;
+
+                    return $args[1]->process($args[0]);
+                }
+            )
+            ->shouldBeCalledTimes(2)
+        ;
+
+        $this->beConstructedThrough('create', [$delegate, [$innerMiddleware, $outerMiddleware]]);
+
+        $this->process($this->fakeAServerRequest())->shouldReturn($response);
+        $this->process($this->fakeAServerRequest())->shouldReturn($response);
+    }
+
     public function it_processes_requests_through_pushed_middlewares_in_order(MiddlewareInterface $innerMiddleware, MiddlewareInterface $outerMiddleware, DelegateInterface $delegate)
     {
         $response = $this->fakeAResponse();

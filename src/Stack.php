@@ -37,15 +37,19 @@ class Stack implements DelegateInterface
     }
 
     /**
-     * Constructs an stack without any middleware.
-     *
-     * @param DelegateInterface $delegate
+     * @param DelegateInterface     $delegate
+     * @param MiddlewareInterface[] $middlewares LIFO array of middlewares
      *
      * @return self
      */
-    public static function create(DelegateInterface $delegate)
+    public static function create(DelegateInterface $delegate, array $middlewares = [])
     {
-        return new self($delegate);
+        $stack = new self($delegate);
+        foreach ($middlewares as $middleware) {
+            $stack = $stack->withPushedMiddleware($middleware);
+        }
+
+        return $stack;
     }
 
     /**
