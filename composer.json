@@ -19,7 +19,7 @@
     "require-dev": {
         "phpspec/phpspec": "^3.2",
         "friendsofphp/php-cs-fixer": "^1.13",
-        "http-interop/http-factory-diactoros": "0.1.*"
+        "http-interop/http-factory-diactoros": "0.3.0"
     },
     "autoload": {
         "psr-4": {
