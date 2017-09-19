@@ -11,8 +11,8 @@
 
 namespace Ajgarlag\Psr15\Dispatcher;
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Interop\Http\Server\MiddlewareInterface;
+use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -43,20 +43,20 @@ class Pipe implements MiddlewareInterface
     }
 
     /**
-     * @param ServerRequestInterface $request
-     * @param DelegateInterface      $delegate
+     * @param ServerRequestInterface  $request
+     * @param RequestHandlerInterface $requestHandler
      *
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, DelegateInterface $delegate)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $requestHandler)
     {
         if (empty($this->middlewares)) {
-            return $delegate->process($request);
+            return $requestHandler->handle($request);
         }
 
-        $stack = Stack::create($delegate, array_reverse($this->middlewares));
+        $stack = Stack::create($requestHandler, array_reverse($this->middlewares));
 
-        return $stack->process($request);
+        return $stack->handle($request);
     }
 
     /**
