@@ -1,5 +1,5 @@
 suites:
-    ajgarlag_malcolm_suite:
+    ajgarlag_psr15_dispatcher_suite:
         namespace: Ajgarlag\Psr15\Dispatcher
         psr4_prefix: Ajgarlag\Psr15\Dispatcher
 formatter.name: pretty
