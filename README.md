@@ -24,13 +24,12 @@ $ composer require ajgarlag/psr15-dispatcher
 Usage
 -----
 
-You should have a nuclear application that you would like to dispatch decorated with several [PSR-15] middlewares.
-
-At first, your app must implements [DelegateInterface] or must be wrapped in a `DelegateInterface` implementation.
+At first, your must have an app that implements [RequestHandlerInterface] or it is wrapped in a
+`RequestHandlerInterface` implementation, that you would like to dispatch decorated with several [PSR-15] middlewares.
 
 ```php
-/* @var $delegate DelegateInterface */
-$delegate = new YourApp();
+/* @var $requestHandler RequestHandlerInterface */
+$requestHandler = new YourApp();
 ```
 
 Now, you can choose between a `Pipe` or a `Stack` to dispatch your app.
@@ -38,7 +37,7 @@ Now, you can choose between a `Pipe` or a `Stack` to dispatch your app.
 ### Pipe dispatch
 
 With this option, you create a `Pipe`, connect the desired middlewares and finally process the server
-request through the pipe, passing your app as delegate:
+request through the pipe, passing your app as request handler:
 
 ```php
 use Ajgarlag\Psr15\Dispatcher\Pipe;
@@ -49,7 +48,7 @@ $pipe = Pipe::create()
     ->withConnectedMiddleware(new LastMiddleware())
 ;
 
-$response = $pipe->process($request, $delegate);
+$response = $pipe->process($request, $requestHandler);
 ```
 
 The `Pipe` class implements itself the PSR-15 [MiddlewareInterface], so it can be connected to another `Pipe`.
@@ -69,14 +68,14 @@ $pipe = Pipe::create([
 
 ### Stack dispatch
 
-With this option, you wrap your app delegate into an `Stack` instance, push the desired middlewares and finally process
+With this option, you wrap your app request handler into an `Stack` instance, push the desired middlewares and finally process
 the server request through the stack. Beware that to achieve the same behavior that in the previous `Pipe` you must push
 middlewares in **reverse** order:
 
 ```php
 use Ajgarlag\Psr15\Dispatcher\Stack;
 
-$stack = Stack::create($delegate)
+$stack = Stack::create($requestHandler)
     ->withPushedMiddleware(new LastMiddleware())
     ->withPushedMiddleware(new MiddleMiddleware())
     ->withPushedMiddleware(new FirstMiddleware())
@@ -85,14 +84,14 @@ $stack = Stack::create($delegate)
 $response = $stack->process($request);
 ```
 
-The `Stack` class implements itself the PSR-15 [DelegateInterface], so it can be wrapped by another `Stack`.
+The `Stack` class implements itself the PSR-15 [RequestHandlerInterface], so it can be wrapped by another `Stack`.
 
 #### Stack initialization
 
 You can pass a LIFO array of middlewares to initialize the `Stack`:
 
 ```php
-$stack = Stack::create($delegate, [
+$stack = Stack::create($requestHandler, [
     new LastMiddleware(),
     new MiddleMiddleware(),
     new FirstMiddleware(),
@@ -105,7 +104,7 @@ My preferred option is to build a `Pipe` with middlewares connected in natural o
 but this is a matter of taste:
 
 ```php
-$stack = Stack::create($delegate);
+$stack = Stack::create($requestHandler);
 $pipe = Pipe::create()
     ->withConnectedMiddleware(new FirstMiddleware())
     ->withConnectedMiddleware(new MiddleMiddleware())
@@ -136,7 +135,7 @@ Developed with ♥ by [Antonio J. García Lagar].
 If you find this component useful, please add a ★ in the [GitHub repository page] and/or the [Packagist package page].
 
 [PSR-15]: https://github.com/http-interop/http-middleware
-[DelegateInterface]: https://github.com/http-interop/http-middleware/blob/master/src/DelegateInterface.php
+[RequestHandlerInterface]: https://github.com/http-interop/http-middleware/blob/master/src/RequestHandlerInterface.php
 [MiddlewareInterface]: https://github.com/http-interop/http-middleware/blob/master/src/MiddlewareInterface.php
 [LICENSE]: LICENSE
 [Github issue tracker]: https://github.com/ajgarlag/psr15-dispatcher/issues

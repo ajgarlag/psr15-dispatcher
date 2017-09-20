@@ -11,17 +11,17 @@
 
 namespace Ajgarlag\Psr15\Dispatcher;
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Interop\Http\Server\MiddlewareInterface;
+use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Stack implements DelegateInterface
+class Stack implements RequestHandlerInterface
 {
     /**
-     * @var DelegateInterface
+     * @var RequestHandlerInterface
      */
-    private $delegate;
+    private $requestHandler;
 
     /**
      * @var MiddlewareInterface[]
@@ -29,22 +29,22 @@ class Stack implements DelegateInterface
     private $middlewares = [];
 
     /**
-     * @param DelegateInterface $delegate
+     * @param RequestHandlerInterface $requestHandler
      */
-    private function __construct(DelegateInterface $delegate)
+    private function __construct(RequestHandlerInterface $requestHandler)
     {
-        $this->delegate = $delegate;
+        $this->requestHandler = $requestHandler;
     }
 
     /**
-     * @param DelegateInterface     $delegate
-     * @param MiddlewareInterface[] $middlewares LIFO array of middlewares
+     * @param RequestHandlerInterface $requestHandler
+     * @param MiddlewareInterface[]   $middlewares    LIFO array of middlewares
      *
      * @return self
      */
-    public static function create(DelegateInterface $delegate, array $middlewares = [])
+    public static function create(RequestHandlerInterface $requestHandler, array $middlewares = [])
     {
-        $stack = new self($delegate);
+        $stack = new self($requestHandler);
         foreach ($middlewares as $middleware) {
             $stack = $stack->withPushedMiddleware($middleware);
         }
@@ -57,10 +57,10 @@ class Stack implements DelegateInterface
      *
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request)
+    public function handle(ServerRequestInterface $request)
     {
         if (null === $next = $this->peek()) {
-            return $this->delegate->process($request);
+            return $this->requestHandler->handle($request);
         }
 
         return $next->process($request, $this->pop());
