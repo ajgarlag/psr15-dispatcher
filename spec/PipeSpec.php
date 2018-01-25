@@ -12,11 +12,11 @@
 namespace spec\Ajgarlag\Psr15\Dispatcher;
 
 use Ajgarlag\Psr15\Dispatcher\Pipe;
-use Interop\Http\Server\MiddlewareInterface;
-use Interop\Http\Server\RequestHandlerInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class PipeSpec extends ObjectBehavior
 {

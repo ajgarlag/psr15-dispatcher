@@ -11,10 +11,10 @@
 
 namespace Ajgarlag\Psr15\Dispatcher;
 
-use Interop\Http\Server\MiddlewareInterface;
-use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class Pipe implements MiddlewareInterface
 {
@@ -32,7 +32,7 @@ class Pipe implements MiddlewareInterface
      *
      * @return self
      */
-    public static function create(array $middlewares = [])
+    public static function create(array $middlewares = []): self
     {
         $pipe = new self();
         foreach ($middlewares as $middleware) {
@@ -48,7 +48,7 @@ class Pipe implements MiddlewareInterface
      *
      * @return ResponseInterface
      */
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $requestHandler)
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $requestHandler): ResponseInterface
     {
         if (empty($this->middlewares)) {
             return $requestHandler->handle($request);
@@ -66,7 +66,7 @@ class Pipe implements MiddlewareInterface
      *
      * @return self
      */
-    public function withConnectedMiddleware(MiddlewareInterface $middleware)
+    public function withConnectedMiddleware(MiddlewareInterface $middleware): self
     {
         $pipe = clone $this;
         array_push($pipe->middlewares, $middleware);

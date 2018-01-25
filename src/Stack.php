@@ -11,10 +11,10 @@
 
 namespace Ajgarlag\Psr15\Dispatcher;
 
-use Interop\Http\Server\MiddlewareInterface;
-use Interop\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 class Stack implements RequestHandlerInterface
 {
@@ -42,7 +42,7 @@ class Stack implements RequestHandlerInterface
      *
      * @return self
      */
-    public static function create(RequestHandlerInterface $requestHandler, array $middlewares = [])
+    public static function create(RequestHandlerInterface $requestHandler, array $middlewares = []): self
     {
         $stack = new self($requestHandler);
         foreach ($middlewares as $middleware) {
@@ -57,7 +57,7 @@ class Stack implements RequestHandlerInterface
      *
      * @return ResponseInterface
      */
-    public function handle(ServerRequestInterface $request)
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (null === $next = $this->peek()) {
             return $this->requestHandler->handle($request);
@@ -73,7 +73,7 @@ class Stack implements RequestHandlerInterface
      *
      * @return self
      */
-    public function withPushedMiddleware(MiddlewareInterface $middleware)
+    public function withPushedMiddleware(MiddlewareInterface $middleware): self
     {
         $stack = clone $this;
         array_unshift($stack->middlewares, $middleware);
@@ -92,7 +92,7 @@ class Stack implements RequestHandlerInterface
     /**
      * @return self
      */
-    private function pop()
+    private function pop(): self
     {
         $stack = clone $this;
         array_shift($stack->middlewares);
