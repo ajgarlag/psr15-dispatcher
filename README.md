@@ -24,7 +24,7 @@ $ composer require ajgarlag/psr15-dispatcher
 Usage
 -----
 
-At first, your must have an app that implements [RequestHandlerInterface] or it is wrapped in a
+At first, you must have an app that implements [RequestHandlerInterface] or is wrapped in a
 `RequestHandlerInterface` implementation, that you would like to dispatch decorated with several [PSR-15] middlewares.
 
 ```php
@@ -81,7 +81,7 @@ $stack = Stack::create($requestHandler)
     ->withPushedMiddleware(new FirstMiddleware())
 ;
 
-$response = $stack->process($request);
+$response = $stack->handle($request);
 ```
 
 The `Stack` class implements itself the PSR-15 [RequestHandlerInterface], so it can be wrapped by another `Stack`.
