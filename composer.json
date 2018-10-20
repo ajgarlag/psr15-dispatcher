@@ -18,6 +18,7 @@
     },
     "require-dev": {
         "phpspec/phpspec": "^3.2",
+        "phpunit/phpunit": "^6.5",
         "friendsofphp/php-cs-fixer": "^2",
         "http-interop/http-factory-diactoros": "0.3.0"
     },
@@ -28,12 +29,14 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "spec\\Ajgarlag\\Psr15\\Dispatcher\\": "./spec"
+            "spec\\Ajgarlag\\Psr15\\Dispatcher\\": "./spec",
+            "tests\\Ajgarlag\\Psr15\\Dispatcher\\": "./tests"
         }
     },
     "scripts": {
         "test": "vendor/bin/phpspec run",
-        "fix-cs": "vendor/bin/php-cs-fixer fix"
+        "fix-cs": "vendor/bin/php-cs-fixer fix",
+        "phpunit": "vendor/bin/phpunit"
     },
     "extra": {
         "branch-alias": {
