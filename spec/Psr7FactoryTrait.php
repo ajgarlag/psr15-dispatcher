@@ -13,7 +13,6 @@ namespace spec\Ajgarlag\Psr15\Dispatcher;
 
 use Http\Factory\Diactoros\ResponseFactory;
 use Http\Factory\Diactoros\ServerRequestFactory;
-use Http\Factory\Diactoros\UriFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -29,11 +28,7 @@ trait Psr7FactoryTrait
     protected function fakeAServerRequest($server = [], $method = 'GET', $uri = 'http://example.org')
     {
         $requestFactory = new ServerRequestFactory();
-        $uriFactory = new UriFactory();
-        $request = $requestFactory->createServerRequestFromArray($server)
-            ->withMethod($method)
-            ->withUri($uriFactory->createUri($uri))
-        ;
+        $request = $requestFactory->createServerRequest($method, $uri, $server);
 
         return $request;
     }
