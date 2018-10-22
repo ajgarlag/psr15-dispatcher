@@ -134,9 +134,9 @@ Developed with ♥ by [Antonio J. García Lagar].
 
 If you find this component useful, please add a ★ in the [GitHub repository page] and/or the [Packagist package page].
 
-[PSR-15]: https://github.com/http-interop/http-middleware
-[RequestHandlerInterface]: https://github.com/http-interop/http-middleware/blob/master/src/RequestHandlerInterface.php
-[MiddlewareInterface]: https://github.com/http-interop/http-middleware/blob/master/src/MiddlewareInterface.php
+[PSR-15]: https://www.php-fig.org/psr/psr-15/
+[RequestHandlerInterface]: https://www.php-fig.org/psr/psr-15/#21-psrhttpserverrequesthandlerinterface
+[MiddlewareInterface]: https://www.php-fig.org/psr/psr-15/#22-psrhttpservermiddlewareinterface
 [LICENSE]: LICENSE
 [Github issue tracker]: https://github.com/ajgarlag/psr15-dispatcher/issues
 [Antonio J. García Lagar]: http://aj.garcialagar.es
