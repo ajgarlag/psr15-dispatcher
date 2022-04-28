@@ -14,7 +14,10 @@
     "require": {
         "php": ">=7.4",
         "psr/http-message": "^1.0",
-        "psr/http-server-middleware": "^1.0"
+        "psr/http-server-middleware": "^1.0",
+        "phpstan/phpstan": "^1.6",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan-deprecation-rules": "^1.0"
     },
     "require-dev": {
         "phpspec/phpspec": "^7.2",
@@ -34,11 +37,19 @@
     "scripts": {
         "lint": "@php vendor/bin/php-cs-fixer fix --dry-run --ansi -v",
         "fix-cs": "@php vendor/bin/php-cs-fixer fix --ansi",
-        "test": "@php vendor/bin/phpspec run --ansi"
+        "test": [
+            "@php vendor/bin/phpstan analyse --ansi -l 9 src ",
+            "@php vendor/bin/phpspec run --ansi"
+        ]
     },
     "extra": {
         "branch-alias": {
             "dev-master": "0.4.x-dev"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "phpstan/extension-installer": true
         }
     }
 }

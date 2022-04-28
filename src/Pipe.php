@@ -19,7 +19,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class Pipe implements MiddlewareInterface
 {
     /**
-     * @var ServerMiddlewareInterface[]
+     * @var MiddlewareInterface[]
      */
     private array $middlewares = [];
 
