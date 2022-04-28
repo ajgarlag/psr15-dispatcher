@@ -32,8 +32,9 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpspec run",
-        "fix-cs": "vendor/bin/php-cs-fixer fix"
+        "lint": "@php vendor/bin/php-cs-fixer fix --dry-run --ansi -v",
+        "fix-cs": "@php vendor/bin/php-cs-fixer fix --ansi",
+        "test": "@php vendor/bin/phpspec run --ansi"
     },
     "extra": {
         "branch-alias": {

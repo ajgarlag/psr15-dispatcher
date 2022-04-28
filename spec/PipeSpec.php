@@ -62,16 +62,16 @@ class PipeSpec extends ObjectBehavior
 
         $firstMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
             function ($args) use ($lastMiddleware) {
-                    $lastMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
-                        function ($args) {
-                                return $args[1]->handle($args[0]);
-                            }
-                    )
+                $lastMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
+                    function ($args) {
+                        return $args[1]->handle($args[0]);
+                    }
+                )
                         ->shouldBeCalledTimes(2)
                     ;
 
-                    return $args[1]->handle($args[0]);
-                }
+                return $args[1]->handle($args[0]);
+            }
         )
             ->shouldBeCalledTimes(2)
         ;
@@ -90,16 +90,16 @@ class PipeSpec extends ObjectBehavior
 
         $firstMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
             function ($args) use ($lastMiddleware) {
-                    $lastMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
-                        function ($args) {
-                                return $args[1]->handle($args[0]);
-                            }
-                    )
+                $lastMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
+                    function ($args) {
+                        return $args[1]->handle($args[0]);
+                    }
+                )
                         ->shouldBeCalledTimes(2)
                     ;
 
-                    return $args[1]->handle($args[0]);
-                }
+                return $args[1]->handle($args[0]);
+            }
         )
             ->shouldBeCalledTimes(2)
         ;
