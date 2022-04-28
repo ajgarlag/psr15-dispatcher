@@ -4,6 +4,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2022-04-28
+
+### Changed
+- `Pipe` and `Stack` classes are `final`.
+
+### Removed
+- Drop support of PHP <7.4
+
 ## [0.3.0] - 2018-10-22
 
 ### Changed
@@ -26,7 +34,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `Pipe` class.
 - `Stack` class.
 
-[Unreleased]: https://github.com/ajgarlag/psr15-dispatcher/compare/0.3.0...master
+[Unreleased]: https://github.com/ajgarlag/psr15-dispatcher/compare/0.4.0...master
+[0.4.0]: https://github.com/ajgarlag/psr15-dispatcher/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/ajgarlag/psr15-dispatcher/compare/0.2.0...0.3.0
 [0.2.0]: https://github.com/ajgarlag/psr15-dispatcher/compare/0.1.1...0.2.0
 [0.1.1]: https://github.com/ajgarlag/psr15-dispatcher/compare/0.1.0...0.1.1
