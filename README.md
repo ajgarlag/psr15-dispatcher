@@ -3,7 +3,7 @@ Psr15 Dispatcher
 
 The Psr15 Dispatcher component allows you to dispatch [PSR-15] middlewares.
 
-[![Build Status](https://travis-ci.org/ajgarlag/psr15-dispatcher.png?branch=master)](https://travis-ci.org/ajgarlag/psr15-dispatcher)
+[![Build Status](https://github.com/ajgarlag/psr15-dispatcher/actions/workflows/tests.yaml/badge.svg?branch=master)](https://github.com/ajgarlag/psr15-dispatcher/actions/workflows/tests.yaml)
 [![Latest Stable Version](https://poser.pugx.org/ajgarlag/psr15-dispatcher/v/stable.png)](https://packagist.org/packages/ajgarlag/psr15-dispatcher)
 [![Latest Unstable Version](https://poser.pugx.org/ajgarlag/psr15-dispatcher/v/unstable.png)](https://packagist.org/packages/ajgarlag/psr15-dispatcher)
 [![Total Downloads](https://poser.pugx.org/ajgarlag/psr15-dispatcher/downloads.png)](https://packagist.org/packages/ajgarlag/psr15-dispatcher)
