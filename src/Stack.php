@@ -16,31 +16,22 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class Stack implements RequestHandlerInterface
+final class Stack implements RequestHandlerInterface
 {
-    /**
-     * @var RequestHandlerInterface
-     */
-    private $requestHandler;
+    private RequestHandlerInterface $requestHandler;
 
     /**
      * @var MiddlewareInterface[]
      */
-    private $middlewares = [];
+    private array $middlewares = [];
 
-    /**
-     * @param RequestHandlerInterface $requestHandler
-     */
     private function __construct(RequestHandlerInterface $requestHandler)
     {
         $this->requestHandler = $requestHandler;
     }
 
     /**
-     * @param RequestHandlerInterface $requestHandler
-     * @param MiddlewareInterface[]   $middlewares    LIFO array of middlewares
-     *
-     * @return self
+     * @param MiddlewareInterface[] $middlewares
      */
     public static function create(RequestHandlerInterface $requestHandler, array $middlewares = []): self
     {
@@ -52,11 +43,6 @@ class Stack implements RequestHandlerInterface
         return $stack;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return ResponseInterface
-     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (null === $next = $this->peek()) {
@@ -66,13 +52,6 @@ class Stack implements RequestHandlerInterface
         return $next->process($request, $this->pop());
     }
 
-    /**
-     * Creates a new stack with the given middleware pushed.
-     *
-     * @param MiddlewareInterface $middleware
-     *
-     * @return self
-     */
     public function withPushedMiddleware(MiddlewareInterface $middleware): self
     {
         $stack = clone $this;
@@ -81,17 +60,11 @@ class Stack implements RequestHandlerInterface
         return $stack;
     }
 
-    /**
-     * @return MiddlewareInterface|null
-     */
-    private function peek()
+    private function peek(): ?MiddlewareInterface
     {
         return reset($this->middlewares) ?: null;
     }
 
-    /**
-     * @return self
-     */
     private function pop(): self
     {
         $stack = clone $this;

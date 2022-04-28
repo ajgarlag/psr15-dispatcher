@@ -16,21 +16,19 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class Pipe implements MiddlewareInterface
+final class Pipe implements MiddlewareInterface
 {
     /**
      * @var ServerMiddlewareInterface[]
      */
-    private $middlewares = [];
+    private array $middlewares = [];
 
     private function __construct()
     {
     }
 
     /**
-     * @param MiddlewareInterface[] $middlewares FIFO array of middlewares
-     *
-     * @return self
+     * @param MiddlewareInterface[] $middlewares
      */
     public static function create(array $middlewares = []): self
     {
@@ -42,12 +40,6 @@ class Pipe implements MiddlewareInterface
         return $pipe;
     }
 
-    /**
-     * @param ServerRequestInterface  $request
-     * @param RequestHandlerInterface $requestHandler
-     *
-     * @return ResponseInterface
-     */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $requestHandler): ResponseInterface
     {
         if (empty($this->middlewares)) {
@@ -59,13 +51,6 @@ class Pipe implements MiddlewareInterface
         return $stack->handle($request);
     }
 
-    /**
-     * Creates a new pipe with the given middleware connected.
-     *
-     * @param MiddlewareInterface $middleware
-     *
-     * @return self
-     */
     public function withConnectedMiddleware(MiddlewareInterface $middleware): self
     {
         $pipe = clone $this;

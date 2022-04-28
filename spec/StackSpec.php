@@ -62,18 +62,18 @@ class StackSpec extends ObjectBehavior
         $requestHandler->handle(Argument::type(RequestInterface::class))->willReturn($response)->shouldBeCalledTimes(2);
 
         $outerMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
-                function ($args) use ($innerMiddleware) {
+            function ($args) use ($innerMiddleware) {
                     $innerMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
-                            function ($args) {
+                        function ($args) {
                                 return $args[1]->handle($args[0]);
                             }
-                        )
+                    )
                         ->shouldBeCalledTimes(2)
                     ;
 
                     return $args[1]->handle($args[0]);
                 }
-            )
+        )
             ->shouldBeCalledTimes(2)
         ;
 
@@ -90,18 +90,18 @@ class StackSpec extends ObjectBehavior
         $requestHandler->handle(Argument::type(RequestInterface::class))->willReturn($response)->shouldBeCalledTimes(2);
 
         $outerMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
-                function ($args) use ($innerMiddleware) {
+            function ($args) use ($innerMiddleware) {
                     $innerMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
-                            function ($args) {
+                        function ($args) {
                                 return $args[1]->handle($args[0]);
                             }
-                        )
+                    )
                         ->shouldBeCalledTimes(2)
                     ;
 
                     return $args[1]->handle($args[0]);
                 }
-            )
+        )
             ->shouldBeCalledTimes(2)
         ;
 
