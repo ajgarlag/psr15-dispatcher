@@ -69,7 +69,7 @@ class StackSpec extends ObjectBehavior
                     }
                 )
                         ->shouldBeCalledTimes(2)
-                    ;
+                ;
 
                 return $args[1]->handle($args[0]);
             }
@@ -97,7 +97,7 @@ class StackSpec extends ObjectBehavior
                     }
                 )
                         ->shouldBeCalledTimes(2)
-                    ;
+                ;
 
                 return $args[1]->handle($args[0]);
             }
