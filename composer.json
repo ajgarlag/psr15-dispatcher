@@ -35,11 +35,11 @@
         }
     },
     "scripts": {
-        "lint": "@php vendor/bin/php-cs-fixer fix --dry-run --ansi -v",
-        "fix-cs": "@php vendor/bin/php-cs-fixer fix --ansi",
+        "lint": "@php -d xdebug.mode=off vendor/bin/php-cs-fixer fix --dry-run --ansi -v",
+        "fix-cs": "@php -d xdebug.mode=off vendor/bin/php-cs-fixer fix --ansi",
         "test": [
-            "@php vendor/bin/phpstan analyse --ansi -l 9 src ",
-            "@php vendor/bin/phpspec run --ansi"
+            "@php -d xdebug.mode=off vendor/bin/phpstan analyse --ansi -l 9 src ",
+            "@php -d xdebug.mode=off vendor/bin/phpspec run --ansi"
         ]
     },
     "extra": {
