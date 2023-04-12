@@ -22,22 +22,22 @@ class PipeSpec extends ObjectBehavior
 {
     use Psr7FactoryTrait;
 
-    public function let()
+    public function let(): void
     {
         $this->beConstructedThrough('create');
     }
 
-    public function it_is_initializable()
+    public function it_is_initializable(): void
     {
         $this->shouldHaveType(Pipe::class);
     }
 
-    public function it_is_a_middleware()
+    public function it_is_a_middleware(): void
     {
         $this->shouldImplement(MiddlewareInterface::class);
     }
 
-    public function it_delegates_to_passed_request_handler(RequestHandlerInterface $requestHandler)
+    public function it_delegates_to_passed_request_handler(RequestHandlerInterface $requestHandler): void
     {
         $response = $this->fakeAResponse();
 
@@ -46,7 +46,7 @@ class PipeSpec extends ObjectBehavior
         $this->process($this->fakeAServerRequest(), $requestHandler)->shouldReturn($response);
     }
 
-    public function it_creates_a_new_pipeline_when_a_middleware_is_connected(MiddlewareInterface $middleware)
+    public function it_creates_a_new_pipeline_when_a_middleware_is_connected(MiddlewareInterface $middleware): void
     {
         $pipe = $this->withConnectedMiddleware($middleware);
 
@@ -54,18 +54,16 @@ class PipeSpec extends ObjectBehavior
         $pipe->shouldNotBe($this);
     }
 
-    public function it_can_create_a_new_pipeline_with_middlewares_connected(MiddlewareInterface $firstMiddleware, MiddlewareInterface $lastMiddleware, RequestHandlerInterface $requestHandler)
+    public function it_can_create_a_new_pipeline_with_middlewares_connected(MiddlewareInterface $firstMiddleware, MiddlewareInterface $lastMiddleware, RequestHandlerInterface $requestHandler): void
     {
         $response = $this->fakeAResponse();
 
         $requestHandler->handle(Argument::type(ServerRequestInterface::class))->willReturn($response)->shouldBeCalledTimes(2);
 
         $firstMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
-            function ($args) use ($lastMiddleware) {
+            static function ($args) use ($lastMiddleware) {
                 $lastMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
-                    function ($args) {
-                        return $args[1]->handle($args[0]);
-                    }
+                    static fn ($args) => $args[1]->handle($args[0])
                 )
                         ->shouldBeCalledTimes(2)
                 ;
@@ -82,18 +80,16 @@ class PipeSpec extends ObjectBehavior
         $this->process($this->fakeAServerRequest(), $requestHandler)->shouldReturn($response);
     }
 
-    public function it_processes_requests_through_piped_middlewares_in_order(MiddlewareInterface $firstMiddleware, MiddlewareInterface $lastMiddleware, RequestHandlerInterface $requestHandler)
+    public function it_processes_requests_through_piped_middlewares_in_order(MiddlewareInterface $firstMiddleware, MiddlewareInterface $lastMiddleware, RequestHandlerInterface $requestHandler): void
     {
         $response = $this->fakeAResponse();
 
         $requestHandler->handle(Argument::type(ServerRequestInterface::class))->willReturn($response)->shouldBeCalledTimes(2);
 
         $firstMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
-            function ($args) use ($lastMiddleware) {
+            static function ($args) use ($lastMiddleware) {
                 $lastMiddleware->process(Argument::type(ServerRequestInterface::class), Argument::type(RequestHandlerInterface::class))->will(
-                    function ($args) {
-                        return $args[1]->handle($args[0]);
-                    }
+                    static fn ($args) => $args[1]->handle($args[0])
                 )
                         ->shouldBeCalledTimes(2)
                 ;
