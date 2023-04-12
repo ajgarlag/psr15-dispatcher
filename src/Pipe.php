@@ -40,21 +40,21 @@ final class Pipe implements MiddlewareInterface
         return $pipe;
     }
 
-    public function process(ServerRequestInterface $request, RequestHandlerInterface $requestHandler): ResponseInterface
+    public function process(ServerRequestInterface $serverRequest, RequestHandlerInterface $requestHandler): ResponseInterface
     {
-        if (empty($this->middlewares)) {
-            return $requestHandler->handle($request);
+        if ([] === $this->middlewares) {
+            return $requestHandler->handle($serverRequest);
         }
 
         $stack = Stack::create($requestHandler, array_reverse($this->middlewares));
 
-        return $stack->handle($request);
+        return $stack->handle($serverRequest);
     }
 
     public function withConnectedMiddleware(MiddlewareInterface $middleware): self
     {
         $pipe = clone $this;
-        array_push($pipe->middlewares, $middleware);
+        $pipe->middlewares[] = $middleware;
 
         return $pipe;
     }

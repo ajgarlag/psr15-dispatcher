@@ -17,31 +17,17 @@ use Psr\Http\Message\ServerRequestInterface;
 
 trait Psr7FactoryTrait
 {
-    /**
-     * @param array  $server
-     * @param string $method
-     * @param string $uri
-     *
-     * @return ServerRequestInterface
-     */
-    protected function fakeAServerRequest($server = [], $method = 'GET', $uri = 'http://example.org')
+    protected function fakeAServerRequest(array $server = [], string $method = 'GET', string $uri = 'http://example.org'): ServerRequestInterface
     {
-        $requestFactory = new Psr17Factory();
-        $request = $requestFactory->createServerRequest($method, $uri, $server);
+        $psr17Factory = new Psr17Factory();
 
-        return $request;
+        return $psr17Factory->createServerRequest($method, $uri, $server);
     }
 
-    /**
-     * @param int $code
-     *
-     * @return ResponseInterface
-     */
-    protected function fakeAResponse($code = 200)
+    protected function fakeAResponse(int $code = 200): ResponseInterface
     {
-        $factory = new Psr17Factory();
-        $response = $factory->createResponse($code);
+        $psr17Factory = new Psr17Factory();
 
-        return $response;
+        return $psr17Factory->createResponse($code);
     }
 }

@@ -43,13 +43,13 @@ final class Stack implements RequestHandlerInterface
         return $stack;
     }
 
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $serverRequest): ResponseInterface
     {
-        if (null === $next = $this->peek()) {
-            return $this->requestHandler->handle($request);
+        if (!($middleware = $this->peek()) instanceof \Psr\Http\Server\MiddlewareInterface) {
+            return $this->requestHandler->handle($serverRequest);
         }
 
-        return $next->process($request, $this->pop());
+        return $middleware->process($serverRequest, $this->pop());
     }
 
     public function withPushedMiddleware(MiddlewareInterface $middleware): self
