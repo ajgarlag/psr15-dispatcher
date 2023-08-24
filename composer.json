@@ -12,17 +12,17 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "psr/http-message": "^1.0",
         "psr/http-server-middleware": "^1.0"
     },
     "require-dev": {
-        "phpspec/phpspec": "^7.2",
-        "friendsofphp/php-cs-fixer": "^3.8",
-        "nyholm/psr7": "^1.5",
-        "phpstan/phpstan": "^1.6",
-        "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan-deprecation-rules": "^1.0"
+        "phpspec/phpspec": "^7.4",
+        "friendsofphp/php-cs-fixer": "^3.23",
+        "nyholm/psr7": "^1.8",
+        "phpstan/phpstan": "^1.10",
+        "phpstan/extension-installer": "^1.3",
+        "phpstan/phpstan-deprecation-rules": "^1.1"
     },
     "autoload": {
         "psr-4": {
