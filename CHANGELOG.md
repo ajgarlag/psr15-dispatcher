@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.3] - 2023-08-24
+
 ### Added
 - Add support for psr/http-message:^2
 
@@ -47,7 +49,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - `Pipe` class.
 - `Stack` class.
 
-[Unreleased]: https://github.com/ajgarlag/psr15-dispatcher/compare/0.4.2...master
+[Unreleased]: https://github.com/ajgarlag/psr15-dispatcher/compare/0.4.3...master
+[0.4.3]: https://github.com/ajgarlag/psr15-dispatcher/compare/0.4.2...0.4.3
 [0.4.2]: https://github.com/ajgarlag/psr15-dispatcher/compare/0.4.1...0.4.2
 [0.4.1]: https://github.com/ajgarlag/psr15-dispatcher/compare/0.4.0...0.4.1
 [0.4.0]: https://github.com/ajgarlag/psr15-dispatcher/compare/0.3.0...0.4.0
