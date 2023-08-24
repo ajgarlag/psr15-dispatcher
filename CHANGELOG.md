@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Add support for psr/http-message:^2
+
 ## [0.4.2] - 2023-08-24
 
 ### Removed
